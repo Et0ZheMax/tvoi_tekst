@@ -1,7 +1,13 @@
 import { z } from "zod";
 import dotenv from "dotenv";
+import fs from "node:fs";
+import path from "node:path";
 
-dotenv.config();
+const cwdEnvPath = path.resolve(process.cwd(), ".env");
+const rootEnvPath = path.resolve(process.cwd(), "../..", ".env");
+const envPath = fs.existsSync(cwdEnvPath) ? cwdEnvPath : fs.existsSync(rootEnvPath) ? rootEnvPath : undefined;
+
+dotenv.config(envPath ? { path: envPath } : undefined);
 
 const isProdEnv = process.env.NODE_ENV === "production";
 
