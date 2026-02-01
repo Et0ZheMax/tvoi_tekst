@@ -16,7 +16,7 @@ export default function ChatPage() {
 
   const socket = useMemo(() => {
     const token = getAccessToken();
-    return io(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001", {
+    return io(process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:7777", {
       auth: { token }
     });
   }, []);

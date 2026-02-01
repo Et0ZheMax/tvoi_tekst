@@ -50,8 +50,8 @@ npm run prisma:migrate --workspace apps/api
 npm run dev
 ```
 
-Web: http://localhost:3000
-API: http://localhost:3001
+Web: http://localhost:7001
+API: http://localhost:7777
 
 ## MVP функционал
 
