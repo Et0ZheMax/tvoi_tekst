@@ -3,6 +3,25 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const isProdEnv = process.env.NODE_ENV === "production";
+
+const devFallbacks = isProdEnv
+  ? {}
+  : {
+      DATABASE_URL: "postgresql://tvoi:tvoi_password@localhost:5432/tvoi_tekst",
+      JWT_ACCESS_SECRET: "dev_access_secret_32_chars_minimum_length",
+      JWT_REFRESH_SECRET: "dev_refresh_secret_32_chars_minimum_length",
+      ACCESS_TOKEN_TTL: "15m",
+      REFRESH_TOKEN_TTL: "30d",
+      PORT: "7777",
+      CORS_ORIGIN: "http://localhost:7001",
+      COOKIE_SECURE: "false",
+      RATE_LIMIT_MAX: "100",
+      RATE_LIMIT_WINDOW: "1 minute"
+    };
+
+const envSource = { ...devFallbacks, ...process.env };
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.string().default("7777"),
@@ -17,7 +36,7 @@ const envSchema = z.object({
   RATE_LIMIT_WINDOW: z.string().default("1 minute")
 });
 
-export const env = envSchema.parse(process.env);
+export const env = envSchema.parse(envSource);
 
 export const isProduction = env.NODE_ENV === "production";
 export const isSecureCookie = env.COOKIE_SECURE === "true";
